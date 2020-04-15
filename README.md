@@ -4,7 +4,7 @@ Oh boy, this is a much simpler, easier to follow personal finance dashboard.
 
 I have loaded it up with some default values.
 
-I hope it can be of some use to people (whether from a finance planning perspective or from a learning shiny/R-coding perspective.
+I hope it can be of some use to people (whether from a finance planning perspective or from a learning shiny/R-coding perspective).
 
 Enjoy.
 
