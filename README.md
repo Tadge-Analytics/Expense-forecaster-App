@@ -2,6 +2,8 @@
 
 Oh boy, this is a much simpler, easier to follow personal finance dashboard.
 
+I have loaded it up with some default values.
+
 I hope it can be of some use to people (whether from a finance planning perspective or from a learning shiny/R-coding perspective.
 
 Enjoy.
@@ -15,8 +17,9 @@ Key features of this one include:
 The Filters are nice, as well.
 
 I would like to improve:
-* The colours (oh man, are these defaults dreadful)
-* removing the row_numbers out of the DT table (this is an easy fix)
+* Add an instructions page
+* The colours (oh man, these defaults are dreadful)
+* removing the row_numbers out of the DT table (I suspect this is an easy fix)
 * the ggplotly tooltips -especially the net position tooltip (no value is displayed)
 * Perhaps add a few more labels at certain milestones... to make it easier to see forecast values
 * I would also like to add a downloadable pdf 1 pager (that actually is a useful summarisation).
