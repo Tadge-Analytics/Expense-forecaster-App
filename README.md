@@ -7,15 +7,15 @@ Enjoy.
 It was much easier to build on from and simplify my older (frankly, rediculously complex) finance dashboard efforts.
 
 Key features of this one include: 
-The ability to edit the DT table within the app.
-The ability to download the DT table down to Excel and then to re-upload when you're ready.
+* The ability to edit the DT table within the app.
+* The ability to download the DT table down to Excel and then to re-upload when you're ready.
 
 The Filters are nice, as well.
 
-I would like to improve the ggplotly tooltips
-Perhaps add a few more labels at certain milestones... to make it easier to see forecast values
-
-I would also like to add a downloadable pdf 1 pager (that actually is a useful summarisation).
+I would like to improve:
+* the ggplotly tooltips
+* Perhaps add a few more labels at certain milestones... to make it easier to see forecast values
+* I would also like to add a downloadable pdf 1 pager (that actually is a useful summarisation).
 
 Feel free to reach out to me online.
 
