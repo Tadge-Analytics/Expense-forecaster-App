@@ -13,8 +13,7 @@ It was much easier to build on from and simplify my older (frankly, rediculously
 Key features of this one include: 
 * The ability to edit the DT table within the app.
 * The ability to download the DT table down to Excel and then to re-upload when you're ready.
-
-The Filters are nice, as well.
+* The ~dynamic filters are nice, as well.
 
 I would like to improve:
 * Add an instructions page
