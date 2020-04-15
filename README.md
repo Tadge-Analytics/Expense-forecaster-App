@@ -1,7 +1,9 @@
 # Improved-Personal-Finance-Dashboard
 
 Oh boy, this is a much simpler, easier to follow personal finance dashboard.
-Hope fully it can be of some use to people (whether from a finance planning perspective or from a shiny/R-coding perspective.
+
+I hope it can be of some use to people (whether from a finance planning perspective or from a learning shiny/R-coding perspective.
+
 Enjoy.
 
 It was much easier to build on from and simplify my older (frankly, rediculously complex) finance dashboard efforts.
