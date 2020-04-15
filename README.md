@@ -17,6 +17,7 @@ Key features of this one include:
 
 I would like to improve:
 * Add an instructions page
+* Fix scrolling in the DT table
 * The colours (oh man, these defaults are dreadful)
 * removing the row_numbers out of the DT table (I suspect this is an easy fix)
 * the ggplotly tooltips -especially the net position tooltip (no value is displayed)
