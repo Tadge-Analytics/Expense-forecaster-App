@@ -1,0 +1,250 @@
+---
+title: "dash"
+output: flexdashboard::flex_dashboard
+runtime: shiny
+---
+
+
+```{r setup, include=FALSE}
+
+source("libraries.r")
+source("functions.r")
+
+```
+
+
+
+SideBar {.sidebar}
+---
+```{r}
+
+
+fileInput("categorisation_file",
+          "Upload your own file:",
+          multiple = FALSE,
+          accept = c(".xlsx"))
+
+
+###################################################################
+
+# transform the dataset to be ready for excel
+ready_for_download <- reactive(x$df %>% correct_col_types())
+forecasted_instances <- reactive(x$df %>% prep_from_rates_and_dates(days_to_add = days_to_add()))
+
+
+## Download Button
+downloadButton('downloadData','Download')
+
+downloadHandler(
+  filename = function() {
+    "Categorisations done.xlsx"
+  },
+  content = function(file) {
+    
+    my_workbook <- createWorkbook()
+    
+    addWorksheet(
+      wb = my_workbook,
+      sheetName = "forecast rates"
+    )
+    
+    writeDataTable(
+      my_workbook,
+      sheet = "forecast rates",
+      ready_for_download(),
+      tableStyle = "TableStyleMedium2", withFilter = T
+    )
+    
+    addWorksheet(
+      wb = my_workbook,
+      sheetName = "forecast values"
+    )
+    
+    writeDataTable(
+      my_workbook,
+      sheet = "forecast values",
+      forecasted_instances(),
+      tableStyle = "TableStyleMedium2", withFilter = T
+    )
+    
+    saveWorkbook(my_workbook, file)
+  }
+)
+
+###################################################################
+
+
+br()
+br()
+
+
+sliderInput("forecast_months",
+            "Forecast months ahead:", 
+            12, 
+            min = 1, 
+            max = 24)
+
+
+days_to_add <- reactive(input$forecast_months * 31)
+
+display_options <- c("Expenses only",
+                     "Income only",
+                     "Both",
+                     "Net Position")
+
+
+radioButtons("display_options_id",
+             "Chart display:", 
+             choices = display_options, 
+             selected = display_options[1])
+
+
+
+level_options <- c("Level 1" = 1, 
+                   "Level 2" = 2)
+
+
+radioButtons("level_options_id",
+             "Breakdown by:", 
+             choices = level_options, 
+             selected = level_options[1])
+
+
+br()
+
+
+# only impacts the chart result
+
+
+Level2_options <- reactive(
+  data_for_plot() %>% 
+    distinct(`Category Level2`) %>% 
+    pull()
+)
+
+
+# level 2 filter
+renderUI(
+  pickerInput(
+    inputId = "Level2_options",
+    label = "Level 2 filter",
+    choices = Level2_options(),
+    options = list(
+      `actions-box` = TRUE
+    ),
+    multiple = TRUE
+  )
+)
+
+
+
+
+
+Level1_options <- reactive(
+  data_for_plot() %>%
+    {if (!is.null(input$Level2_options)) {filter(., `Category Level2` %in% input$Level2_options)} else {.}} %>%
+    distinct(`Category Level1`) %>%
+    pull()
+)
+
+
+
+
+# level 1 filter
+
+renderUI(
+  pickerInput(
+    inputId = "Level1_options",
+    label = "Level 1 filter",
+    choices = Level1_options(),
+    options = list(
+      `actions-box` = TRUE
+    ),
+    multiple = TRUE
+  )
+)
+
+
+```
+
+
+Column
+-----------------------------------------------------------------------
+
+### Ongoing Transactions
+```{r}
+
+
+x <- reactiveValues(df = NULL)
+x$df <- generate_blank_table() 
+
+
+###################################################################
+
+observeEvent(input$categorisation_file, {
+  
+  x$df <- input$categorisation_file$datapath %>% 
+    process_the_rates_file() 
+})
+
+
+###################################################################
+
+observeEvent(input$x1_cell_edit, {
+  
+  info <- input$x1_cell_edit
+  
+  i <- info$row
+  j <- info$col
+  v <- info$value
+  
+  x$df[i, j] <- input$x1_cell_edit$value
+  
+})
+
+###################################################################
+
+output$x1 <- renderDataTable(x$df, selection = 'none', editable = TRUE)
+DT::dataTableOutput("x1")
+
+
+```
+
+
+
+
+### Income vs Expenditure
+```{r}
+
+
+data_for_plot <- reactive(
+  x$df %>% 
+    prep_from_rates_and_dates(days_to_add = days_to_add()) %>% 
+    filter(Amount != 0)
+  
+)
+
+
+
+renderPlotly(
+  data_for_plot() %>% 
+    pre_plotting_data_prep(days_to_add = days_to_add(), chart_setting = input$display_options_id) %>% 
+    
+    
+    {if (!is.null(input$Level2_options)) {filter(., `Category Level2` %in% input$Level2_options)} else {.}} %>% 
+    {if (!is.null(input$Level1_options)) {filter(., `Category Level1` %in% input$Level1_options)} else {.}} %>% 
+    
+    
+    plot_the_data(view_level = input$level_options_id, chart_setting = input$display_options_id)
+  
+) 
+
+
+
+
+```
+
+
+
+
+
