@@ -1,6 +1,9 @@
 ---
 title: "dash"
-output: flexdashboard::flex_dashboard
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+      - { title: "Tadge Analytics", href: "https://tadge-analytics.com.au", align: right }
 runtime: shiny
 ---
 
@@ -12,6 +15,8 @@ source("functions.r")
 
 ```
 
+Transactions
+===================================== 
 
 
 SideBar {.sidebar}
@@ -244,6 +249,15 @@ renderPlotly(
 
 ```
 
+
+
+
+Instructions
+===================================== 
+
+
+SideBar {.sidebar}
+---
 
 
 
