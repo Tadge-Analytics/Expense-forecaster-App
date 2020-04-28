@@ -1,5 +1,5 @@
 ---
-title: "dash"
+title: "Expense Forecasting"
 output: 
   flexdashboard::flex_dashboard:
     navbar:
@@ -209,7 +209,20 @@ observeEvent(input$x1_cell_edit, {
 
 ###################################################################
 
-output$x1 <- renderDataTable(x$df, selection = 'none', editable = TRUE)
+steps <- seq(50, 200, 50)
+lengthMenu_options <- list(c(-1, steps), c("All", as.character(steps)))
+
+output$x1 <- renderDataTable(x$df, 
+                             selection = 'none', 
+                             editable = TRUE, 
+                             options = list(
+                searching = TRUE,
+                pageLength = -1,
+                scrollY = "275px",
+                lengthMenu = lengthMenu_options))
+
+
+
 DT::dataTableOutput("x1")
 
 
