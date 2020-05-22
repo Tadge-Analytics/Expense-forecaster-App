@@ -1,0 +1,13 @@
+name: Personal_Finance
+title: Personal_Finance
+username:
+account: julian-tagell
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2119244
+bundleId: 3146516
+url: https://julian-tagell.shinyapps.io/Personal_Finance/
+when: 1589454808.94305
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: app instructions.md|Categorisations done.xlsx|README.md|flexdashboard version/Expense forecasting app.rmd|flexdashboard version/functions.R|flexdashboard version/libraries.R

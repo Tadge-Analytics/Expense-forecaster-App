@@ -144,15 +144,16 @@ server <- function(input, output) {
   
   forecasted_instances <- reactive(
     x$df %>%
-      prep_from_rates_and_dates(days_to_add = days_to_add())
+      prep_from_rates_and_dates(days_to_add = days_to_add()) %>% 
+      mutate(col_letter_1 = int2col(which(colnames(.) == "Category Level1")),
+             col_number_1 = row_number() + 1, 
+             cell_ref_1 = paste0(col_letter_1, col_number_1),
+             formular_1 = glue::glue('=IF(INDEX(Table3[Income (Y)?], MATCH({cell_ref_1}, Table3[Category Level1], 0)) = "", -1, 1) * INDEX(Table3[Amount], MATCH({cell_ref_1}, Table3[Category Level1], 0))')
+             ) %>% 
+      select(-contains("col_letter_"), -contains("col_number_"), -contains("cell_ref_"))
+    
+  
   )
-  
-  
- 
-
-  
-  
-  
   
   
   
@@ -163,7 +164,8 @@ server <- function(input, output) {
     },
     content = function(file) {
       
-      my_workbook <- createWorkbook()
+      my_workbook <- openxlsx::loadWorkbook("template.xlsx")
+
       
       addWorksheet(
         wb = my_workbook,
@@ -183,13 +185,26 @@ server <- function(input, output) {
       )
       
       
+      
       writeDataTable(
         my_workbook,
         sheet = "forecast values",
-        forecasted_instances(),
+        forecasted_instances() %>% select(-contains("formular")),
         tableStyle = "TableStyleMedium2", withFilter = T
       )
-
+        
+        
+        writeFormula(
+          my_workbook, 
+          sheet = "forecast values", 
+          x = forecasted_instances() %>% pull(formular_1), 
+          startCol = 4, 
+          startRow = 2
+        )  
+    
+      
+      worksheetOrder(my_workbook) <- c(2,3,1)
+      
       
       saveWorkbook(my_workbook, file)
     }
